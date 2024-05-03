@@ -2,10 +2,10 @@ import { useNavigate } from "react-router-dom";
 import { Box, Button, useTheme } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
-import { mockDataInvoices } from "../../data/mockData";
+import { mockDataContacts } from "../../data/mockDataHosps";
 import Header from "../../components/Header";
 
-const ApprovedUsers = () => {
+const Hospitals  = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
     const navigate = useNavigate();
@@ -22,11 +22,11 @@ const ApprovedUsers = () => {
         headerName: "Phone Number",
         flex: 1,
       },
-      {
-        field: "email",
-        headerName: "Email",
-        flex: 1,
-      },
+      // {
+      //   field: "email",
+      //   headerName: "Email",
+      //   flex: 1,
+      // },
       {
           // field: "accessLevel",
           // headerName: "Access Level",
@@ -47,7 +47,7 @@ const ApprovedUsers = () => {
                   color="success"
                   sx={{ fontWeight: "bold" }}
                     onClick={()=>{
-                      navigate("/view")
+                      navigate("/detailsPage")
                     }}
                 >
                   View
@@ -99,10 +99,10 @@ const ApprovedUsers = () => {
             },
           }}
         >
-          <DataGrid checkboxSelection rows={mockDataInvoices} columns={columns} />
+          <DataGrid checkboxSelection rows={mockDataContacts} columns={columns} />
         </Box>
       </Box>
     );
   };
   
-  export default ApprovedUsers;
+  export default Hospitals;

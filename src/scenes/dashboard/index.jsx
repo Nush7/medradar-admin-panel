@@ -139,7 +139,7 @@ const Dashboard = () => {
                 fontWeight="600"
                 color={colors.grey[100]}
               >
-                Revenue Generated
+                Activity
               </Typography>
               <Typography
                 variant="h3"

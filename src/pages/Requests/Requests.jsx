@@ -11,81 +11,53 @@ import {
   Button,
   styled,
 } from "@mui/material";
-import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 
 import { useNavigate } from "react-router-dom";
-import { createBrandApi, deleteBrandApi, getBrandApi } from "../../http";
+import { createCategoriesApi, deleteCategoryApi, getCategoriesApi } from "../../http";
 import Header from "../../components/Header";
 
-const AllBrands = () => {
+const Requests = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
-  const [brands, setBrands] = useState([]);
+  const [categories, setCategories] = useState([]);
 
-  const fetchBrands = async () => {
+
+  const fetchCategories = async () => {
     try {
-      const { data } = await getBrandApi();
-      const brandsWithIds = data.data.brands.map((brand, index) => ({
-        ...brand,
+      const { data } = await getCategoriesApi();
+      const categoriesWithIds = data.data.categories.map((category, index) => ({
+        ...category,
         id: index + 1, // You can use any unique identifier here
       }));
-      console.log(brandsWithIds);
-      setBrands(brandsWithIds);
+
+      setCategories(categoriesWithIds);
     } catch (error) {
       console.log(error);
     }
   };
+
+
+//   const handleDelete = async (catId) => {
+//     try {
+//       const { data } = await deleteCategoryApi(catId);
+//       fetchCategories();
+//     } catch (error) {
+//       console.log(error);
+//     }
+//   };
+
 
   useEffect(() => {
-    fetchBrands();
+    fetchCategories();
   }, []);
-  
-  const handleDelete = async (brandId) => {
-    try {
-      const { data } = await deleteBrandApi(brandId);
-      fetchBrands();
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
 
   const columns = [
     { field: "id", headerName: "ID", flex: 0.5 },
-    { field: "brand", headerName: "Name", flex: 0.5 },
-    // {
-    //   field: "image",
-    //   headerName: "Image",
-    //   flex: 1,
-    //   renderCell: (params) => {
-    //     return (
-    //       <Box
-    //         width="200px"
-    //         height={"200px"}
-    //         m="0 auto"
-    //         p="5px"
-    //         display="flex"
-    //         justifyContent="center"
-    //         alignItems="center" // Center the image vertically
-    //         gap={"20px"}
-    //         borderRadius="4px"
-    //         // border="1px solid #ccc" // Add border for better visualization
-    //         boxShadow="0px 2px 4px rgba(0, 0, 0, 0.1)" // Add shadow for better visualization
-    //       >
-    //         <img
-    //           src={params.row.image.url}
-    //           alt=""
-    //           height={"100%"}
-    //           style={{ maxWidth: "100%", maxHeight: "80%", padding: "20px" }} // Make image responsive
-    //         />
-    //       </Box>
-    //     );
-    //   },
-    // },
-
+    { field: "category", headerName: "Hospitals", flex: 0.5 },
     {
       field: "accessLevel",
       headerName: "Access Level",
@@ -101,7 +73,7 @@ const AllBrands = () => {
             gap={"20px"}
             borderRadius="4px"
           >
-            <Button
+            {/* <Button
               variant="contained"
               color="error"
               onClick={() => {
@@ -109,7 +81,7 @@ const AllBrands = () => {
               }}
             >
               Delete
-            </Button>
+            </Button> */}
           </Box>
         );
       },
@@ -128,7 +100,11 @@ const AllBrands = () => {
   };
   return (
     <Box m="20px">
-      <CreateBrand open={open} handleClose={handleClose} fetchBrands={fetchBrands} />
+      <CreateCategory
+        open={open}
+        handleClose={handleClose}
+        fetchCategories={fetchCategories}
+      />
       <Stack
         direction="row"
         display={"flex"}
@@ -136,15 +112,17 @@ const AllBrands = () => {
         alignItems={"center"}
         marginBottom={"10px"}
       >
-        <Header title="Brands" />
-        <Button
+
+        <Header title="Requests" />
+        
+        {/* <Button
           variant="contained"
           color="success"
           sx={{ fontWeight: "bold" }}
           onClick={handleClickOpen}
         >
-          Create Brand
-        </Button>
+          Create Category
+        </Button> */}
       </Stack>
       <Box
         // m="40px 0 0 0"
@@ -183,9 +161,9 @@ const AllBrands = () => {
       >
         <DataGrid
           //   checkboxSelection
-          rows={brands}
+          rows={categories}
           columns={columns}
-          rowHeight={120}
+          rowHeight={90}
           pageSize={5}
           rowsPerPageOptions={[9]}
           getRowClassName={getRowClassName}
@@ -203,44 +181,12 @@ const AllBrands = () => {
   );
 };
 
-const CreateBrand = ({ open, handleClose,fetchBrands }) => {
-  const VisuallyHiddenInput = styled("input")({
-    clip: "rect(0 0 0 0)",
-    clipPath: "inset(50%)",
-    height: 1,
-    overflow: "hidden",
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    whiteSpace: "nowrap",
-    width: 1,
-  });
-
-  const [imagePrev, setImagePrev] = useState("");
-  const [image, setImage] = useState("");
-  const [brand, setBrand] = useState("");
-
-  const changeImageHandler = (e) => {
-    const file = e.target.files[0];
-    const reader = new FileReader();
-
-    reader.readAsDataURL(file);
-
-    reader.onloadend = () => {
-      setImagePrev(reader.result);
-      setImage(file);
-    };
-  };
-
+const CreateCategory = ({ open, handleClose ,fetchCategories}) => {
+  const [category, setCategory] = useState("");
   const handleSubmit = async () => {
     try {
-      const payload = {
-        brand,
-        file: image,
-      };
-
-      const { data } = await createBrandApi(payload);
-      fetchBrands();
+      const { data } = await createCategoriesApi({category});
+      fetchCategories();
       handleClose();
     } catch (error) {
       console.log(error);
@@ -249,26 +195,8 @@ const CreateBrand = ({ open, handleClose,fetchBrands }) => {
 
   return (
     <Dialog open={open} onClose={handleClose}>
-      <DialogTitle>Create Brand</DialogTitle>
-      <DialogContent>
-        <Stack>
-          {imagePrev && ( // Check if imagePrev has a value before rendering Image
-            // eslint-disable-next-line jsx-a11y/alt-text
-            <img src={imagePrev} /> // Ensure Image is imported correctly
-          )}
-          <Button
-            component="label"
-            role={undefined}
-            variant="contained"
-            tabIndex={-1}
-            startIcon={<CloudUploadIcon />}
-            onChange={changeImageHandler}
-          >
-            Brand Image
-            <VisuallyHiddenInput type="file" />
-          </Button>
-        </Stack>
-
+      {/* <DialogTitle>Create Category</DialogTitle> */}
+      {/* <DialogContent>
         <TextField
           autoFocus
           required
@@ -277,20 +205,18 @@ const CreateBrand = ({ open, handleClose,fetchBrands }) => {
           name="Title"
           type="text-area"
           placeholder="Title"
-          value={brand}
-          onChange={(e) => setBrand(e.target.value)}
           fullWidth
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
           variant="standard"
           sx={{ color: "text.primary" }}
         />
-      </DialogContent>
-      <DialogActions>
+      </DialogContent> */}
+      {/* <DialogActions>
         <Button
           variant="outlined"
           color="error"
           onClick={() => {
-            setImagePrev("");
-            setImage("");
             handleClose();
           }}
         >
@@ -304,9 +230,9 @@ const CreateBrand = ({ open, handleClose,fetchBrands }) => {
         >
           Submit
         </Button>
-      </DialogActions>
+      </DialogActions> */}
     </Dialog>
   );
 };
 
-export default AllBrands;
+export default Requests;

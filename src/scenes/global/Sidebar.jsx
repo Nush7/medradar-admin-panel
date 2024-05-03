@@ -152,13 +152,13 @@ const Sidebar = () => {
               selected={selected}
               setSelected={setSelected}
             />
-            <Item
+            {/* <Item
               title="Complaints"
               to="/complaint"
               icon={<ErrorOutlineOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
-            />
+            /> */}
             
             
 
@@ -171,14 +171,14 @@ const Sidebar = () => {
             </Typography>
             <Item
               title="Approved"
-              to="/brands"
+              to="/hospitals"
               icon={<HowToRegOutlinedIcon/>}
               selected={selected}
               setSelected={setSelected}
             />
             <Item
               title="Requests"
-              to="/categories"
+              to="/requests"
               icon={<QuizOutlinedIcon/>}
               selected={selected}
               setSelected={setSelected}
