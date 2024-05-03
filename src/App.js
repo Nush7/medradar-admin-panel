@@ -23,7 +23,7 @@ import SingleOrder from "./pages/Orders/SingleOrder";
 import AllOffers from "./pages/Offers/AllOffers";
 import ApprovedUsers from "./pages/ApprovedUsers/ApprovedUsers";
 import BannedUsers from "./pages/BannedUsers/BannedUsers";
-import Complaint from "./pages/Complaint/Complaint"
+// import Complaint from "./pages/Complaint/Complaint"
 import View from "./pages/View/View";
 import Hospitals from "./pages/Hospitals/Hospitals";
 import Requests from "./pages/Requests/Requests";
@@ -64,7 +64,7 @@ function App() {
               <Route path="/geography" element={<Geography />} />
               <Route path="/approvedUsers" element={<ApprovedUsers/>}/>
               <Route path="/bannedUsers" element={<BannedUsers/>}/>
-              <Route path="/complaint" element={<Complaint  />}/>
+              {/* <Route path="/complaint" element={<Complaint  />}/> */}
               <Route path="/view" element={<View  />}/>
               <Route path="/hospitals" element={<Hospitals  />}/>
               <Route path="/requests" element={<Requests  />}/>
